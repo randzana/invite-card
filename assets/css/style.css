@@ -1488,3 +1488,87 @@ body.is-open .hero__tagline { animation-delay: 1.2s; }
     opacity: 1;
   }
 }
+
+/* ─────────── Language Switcher ─────────── */
+
+.lang-bar {
+  position: fixed;
+  top: 16px;
+  inset-inline-end: 16px;
+  z-index: 80;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 4px;
+  background: rgba(14, 21, 18, 0.78);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+}
+
+.lang-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-soft);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 5px 13px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.22s var(--ease-out);
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.lang-btn:hover {
+  color: var(--gold-light);
+}
+
+.lang-btn.is-active {
+  background: var(--gold-grad);
+  color: #090d0b;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(212, 180, 124, 0.35);
+}
+
+/* ─────────── English / LTR Overrides ─────────── */
+
+html[lang="en"] {
+  --font-display: "Outfit", system-ui, sans-serif;
+  --font-body: "Outfit", system-ui, sans-serif;
+}
+
+html[lang="en"] .hero__title {
+  letter-spacing: -0.5px;
+}
+
+html[lang="en"] .hero__tagline {
+  letter-spacing: 0.3px;
+}
+
+html[lang="en"] .letter__greeting {
+  letter-spacing: 0.2px;
+}
+
+html[lang="en"] .section-title {
+  letter-spacing: 0.5px;
+}
+
+html[lang="en"] .detail__link .icon {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 480px) {
+  .lang-bar {
+    top: 12px;
+    inset-inline-end: 12px;
+    padding: 3px;
+  }
+  .lang-btn {
+    font-size: 0.74rem;
+    padding: 4px 9px;
+  }
+}

@@ -1,56 +1,185 @@
 /**
  * ─────────────────────────────────────────────────────────────
- *  Invitation content — edit this file to customise the card.
- *  All visible text is Central Kurdish (Sorani). Numbers are
- *  written with Latin digits here and rendered as Kurdish
- *  digits (٠١٢٣…) automatically.
+ *  Invitation content — Multi-language (Kurdish, Arabic, English).
  * ─────────────────────────────────────────────────────────────
  */
 window.INVITE_CONFIG = {
-  project: {
-    name: "بۆرسەی زەوییەکانی کۆیە",
-    latinName: "BORSAY ZAWIYAKANI KOYA",
-    tagline: "گەورەترین بۆرسەی کڕین و فرۆشتنی زەوی و زار",
-    host: "٢٠ خاوەن نووسینگەی شاری کۆیە",
-  },
-
-  // Default recipient
-  guest: "بیلال سەعید",
-
   event: {
-    title: "مەراسیمی کردنەوەی فەرمی",
-    // ISO 8601 with the venue's UTC offset (Kurdistan Region = +03:00).
+    // ISO 8601 with Kurdistan Region offset (+03:00)
     start: "2026-10-07T10:00:00+03:00",
     end: "2026-10-07T13:00:00+03:00",
     timeZone: "Asia/Baghdad",
-    rsvpBy: "2026-10-06",
-    dressCode: "فەرمی",
-    message:
-      "بە خۆشحاڵییەوە هەڵدەستین بە کردنەوەی گەورەترین بۆرسە بە ئەندامبوونی ٢٠ خاوەن نووسینگە لە شاری کۆیە؛ بە شانازییەوە بانگهێشتی بەڕێزتان دەکەین بۆ ئامادەبوون و بەشداریکردن لە مەراسیمی کردنەوەی فەرمیی بۆرسەی زەوییەکانی کۆیە.",
-  },
-
-  venue: {
-    name: "بۆرسەی زەوییەکانی کۆیە",
-    address: "شاری کۆیە",
     mapUrl: "https://www.google.com/maps/search/?api=1&query=36.085083,44.627806",
   },
 
-  contact: {
-    // Shown in the footer and used for the tel: link.
-    phone: "",
-    // Organiser's WhatsApp number in international format, digits only
-    // (e.g. "9647501234567").
-    whatsapp: "",
+  languages: {
+    ckb: {
+      name: "کوردی",
+      dir: "rtl",
+      project: {
+        name: "بۆرسەی زەوییەکانی کۆیە",
+        latinName: "BORSAY ZAWIYAKANI KOYA",
+        tagline: "گەورەترین بۆرسەی کڕین و فرۆشتنی زەوی و زار",
+        host: "٢٠ خاوەن نووسینگەی شاری کۆیە",
+      },
+      guest: "بیلال سەعید",
+      guestPrefix: "بەڕێز",
+      event: {
+        title: "مەراسیمی کردنەوەی فەرمی",
+        dressCode: "فەرمی",
+        message:
+          "بە خۆشحاڵییەوە هەڵدەستین بە کردنەوەی گەورەترین بۆرسە بە ئەندامبوونی ٢٠ خاوەن نووسینگە لە شاری کۆیە؛ بە شانازییەوە بانگهێشتی بەڕێزتان دەکەین بۆ ئامادەبوون و بەشداریکردن لە مەراسیمی کردنەوەی فەرمیی بۆرسەی زەوییەکانی کۆیە.",
+      },
+      venue: {
+        name: "بۆرسەی زەوییەکانی کۆیە",
+        address: "شاری کۆیە",
+      },
+      ui: {
+        coverEyebrow: "بانگهێشتنامەیەکی تایبەت",
+        coverFor: "بۆ",
+        coverBtn: "کردنەوەی بانگهێشتنامە",
+        detailsTitle: "وردەکاری مەراسیم",
+        timeLabel: "کات",
+        venueLabel: "شوێن",
+        dressLabel: "جلوبەرگ",
+        mapBtn: "بینینی نەخشە",
+        countdownTitle: "تا مەراسیم ماوە",
+        days: "ڕۆژ",
+        hours: "کاتژمێر",
+        minutes: "خولەک",
+        seconds: "چرکە",
+        liveStatus: "مەراسیمەکە دەستی پێکردووە — بەخێربێن!",
+        endedStatus: "مەراسیمەکە کۆتایی هات.",
+        calBtn: "ساڵنامە",
+        mapNavBtn: "نەخشە",
+        shareBtn: "هاوبەشکردن",
+        footerHope: "بە هیوای بینینتان",
+        footerCredit: "دروستکراوە لەلایەن ڕاند زانا",
+        calTitle: "زیادکردن بۆ ساڵنامە",
+        calGoogle: "ساڵنامەی گووگڵ",
+        calIcs: "ئەپڵ، ئاوتلووک و هی تر",
+        calClose: "داخستن",
+        toastCopied: "بەستەرەکە کۆپی کرا",
+        toastFailed: "نەتوانرا بەستەرەکە کۆپی بکرێت",
+      },
+      stats: [
+        { value: 20, label: "خاوەن نووسینگەی ئەندام" },
+        { value: 1, label: "بۆرسەی ناوەندیی زەوی" },
+        { value: 100, suffix: "٪", label: "متمانە و یاسایی" },
+      ],
+    },
+
+    ar: {
+      name: "عربي",
+      dir: "rtl",
+      project: {
+        name: "بورصة أراضي كويه",
+        latinName: "KOYA LAND EXCHANGE",
+        tagline: "البورصة الأكبر لتداول وشراء الأراضي والعقارات",
+        host: "٢٠ من أصحاب المكاتب العقارية في مدينة كويه",
+      },
+      guest: "بلال سعيد",
+      guestPrefix: "الأستاذ الفاضل",
+      guestSuffix: "المحترم",
+      event: {
+        title: "مراسم الافتتاح الرسمي",
+        dressCode: "رسمي",
+        message:
+          "يسرّنا ويشرّفنا الإعلان عن افتتاح أكبر بورصة للأراضي بمشاركة وعضوية ٢٠ من أصحاب المكاتب في مدينة كويه؛ ونتشرف بدعوة سيادتكم الكريمة لحضور والمشاركة في مراسم الافتتاح الرسمي لبورصة أراضي كويه.",
+      },
+      venue: {
+        name: "بورصة أراضي كويه",
+        address: "مدينة كويه",
+      },
+      ui: {
+        coverEyebrow: "دعوة خاصة",
+        coverFor: "إلى",
+        coverBtn: "فتح الدعوة",
+        detailsTitle: "تفاصيل المراسم",
+        timeLabel: "الوقت",
+        venueLabel: "المكان",
+        dressLabel: "الزي",
+        mapBtn: "عرض الخريطة",
+        countdownTitle: "الوقت المتبقي حتى المراسم",
+        days: "يوم",
+        hours: "ساعة",
+        minutes: "دقيقة",
+        seconds: "ثانية",
+        liveStatus: "بدأت المراسم الآن — أهلاً وسهلاً بكم!",
+        endedStatus: "انتهت المراسم، شكراً لحضوركم.",
+        calBtn: "التقويم",
+        mapNavBtn: "الخريطة",
+        shareBtn: "مشاركة",
+        footerHope: "نتطلع بكل سرور للقائكم",
+        footerCredit: "صُمم وطُوّر بواسطة راند زانا",
+        calTitle: "إضافة إلى التقويم",
+        calGoogle: "تقويم Google",
+        calIcs: "Apple و Outlook وأخرى",
+        calClose: "إغلاق",
+        toastCopied: "تم نسخ الرابط بنجاح",
+        toastFailed: "تعذر نسخ الرابط",
+      },
+      stats: [
+        { value: 20, label: "مكتب عقاري معتمد" },
+        { value: 1, label: "بورصة الأراضي المركزية" },
+        { value: 100, suffix: "٪", label: "ثقة ومصداقية قانونية" },
+      ],
+    },
+
+    en: {
+      name: "English",
+      dir: "ltr",
+      project: {
+        name: "Koya Land Exchange",
+        latinName: "BORSAY ZAWIYAKANI KOYA",
+        tagline: "The Premier Real Estate & Land Exchange Market",
+        host: "20 Real Estate Office Owners of Koya City",
+      },
+      guest: "Bilal Said",
+      guestPrefix: "Mr.",
+      event: {
+        title: "Grand Opening Ceremony",
+        dressCode: "Formal",
+        message:
+          "We take immense pride and pleasure in announcing the grand opening of the premier land and real estate exchange in the city of Koya, uniting 20 distinguished office owners. You are cordially invited to grace us with your presence at this landmark ceremony.",
+      },
+      venue: {
+        name: "Koya Land Exchange",
+        address: "Koya City",
+      },
+      ui: {
+        coverEyebrow: "Exclusive Invitation",
+        coverFor: "To",
+        coverBtn: "Open Invitation",
+        detailsTitle: "Ceremony Details",
+        timeLabel: "Time",
+        venueLabel: "Venue",
+        dressLabel: "Dress Code",
+        mapBtn: "View on Map",
+        countdownTitle: "Countdown to Ceremony",
+        days: "Days",
+        hours: "Hours",
+        minutes: "Minutes",
+        seconds: "Seconds",
+        liveStatus: "The ceremony is taking place now — Welcome!",
+        endedStatus: "The ceremony has concluded. Thank you.",
+        calBtn: "Calendar",
+        mapNavBtn: "Map",
+        shareBtn: "Share",
+        footerHope: "Looking forward to welcoming you",
+        footerCredit: "Crafted by Rand Zana",
+        calTitle: "Add to Calendar",
+        calGoogle: "Google Calendar",
+        calIcs: "Apple, Outlook & others",
+        calClose: "Close",
+        toastCopied: "Link copied to clipboard",
+        toastFailed: "Could not copy link",
+      },
+      stats: [
+        { value: 20, label: "Member Real Estate Offices" },
+        { value: 1, label: "Central Land Exchange" },
+        { value: 100, suffix: "%", label: "Trusted & Certified" },
+      ],
+    },
   },
-
-  stats: [
-    { value: 20, label: "خاوەن نووسینگەی ئەندام" },
-    { value: 1, label: "بۆرسەی ناوەندیی زەوی" },
-    { value: 100, suffix: "٪", label: "متمانە و یاسایی" },
-  ],
-
-  program: [],
-
-  // Guests can have a personalised link: index.html?to=ناوی میوان
-  maxGuests: 4,
 };

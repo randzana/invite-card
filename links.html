@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex">
   <meta name="theme-color" content="#090D0B">
-  <title>بەستەری میوانەکان</title>
+  <title>بەستەری میوانەکان · بۆرسەی زەوییەکانی کۆیە</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600&display=swap">
@@ -28,7 +28,15 @@
     .page__lead { margin-top: 6px; font-size: 0.92rem; color: var(--text-soft); }
     .page .panel { display: grid; gap: 16px; }
     .page .section-title { margin-bottom: 0; }
-    textarea.field__input { min-height: 160px; resize: vertical; line-height: 1.9; }
+    textarea.field__input { min-height: 140px; resize: vertical; line-height: 1.9; }
+    select.field__input {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23D4B47C' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: left 14px center;
+      background-size: 16px;
+      padding-inline-end: 16px;
+    }
     .links { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
     .links__empty { text-align: center; color: var(--muted); font-size: 0.9rem; padding-block: 12px; }
     .link-row {
@@ -75,7 +83,7 @@
   <main class="page">
     <header class="page__head">
       <h1 class="page__title"><span class="gold-text">بەستەری تایبەت بۆ میوانەکان</span></h1>
-      <p class="page__lead">ناوی هەر میوانێک لە دێڕێکی جیادا بنووسە؛ هەر یەکێکیان بەستەرێک وەردەگرێت کە ناوی خۆی لەسەر بانگهێشتنامەکە دەردەکەوێت.</p>
+      <p class="page__lead">ناوی هەر میوانێک لە دێڕێکی جیادا بنووسە؛ دەتوانیت زمانی بانگهێشتنامەکە هەڵبژێریت (کوردی، عەرەبی یان ئینگلیزی) و ڕاستەوخۆ بە واتسئەپ بینێریت.</p>
     </header>
 
     <section class="panel">
@@ -84,7 +92,15 @@
         <textarea class="field__input" id="names" placeholder="بیلال سەعید&#10;شیلان ئەحمەد&#10;د. هێمن عومەر"></textarea>
       </div>
       <div class="field">
-        <label class="field__label" for="base">بەستەری بانگهێشتنامە</label>
+        <label class="field__label" for="linkLang">زمانی بەستەرەکان (Language)</label>
+        <select class="field__input" id="linkLang">
+          <option value="ckb" selected>کوردی (Central Kurdish)</option>
+          <option value="ar">العربية (Arabic)</option>
+          <option value="en">English (ئینگلیزی)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field__label" for="base">بەستەری بنەڕەتیی بانگهێشتنامە</label>
         <input class="field__input field__input--ltr" id="base" type="url" dir="ltr" spellcheck="false">
       </div>
     </section>
@@ -105,6 +121,7 @@
       const C = window.INVITE_CONFIG;
       const $ = (s) => document.querySelector(s);
       const namesEl = $("#names");
+      const langEl = $("#linkLang");
       const baseEl = $("#base");
       const listEl = $("#links");
       const copyAllBtn = $("#copyAll");
@@ -132,17 +149,26 @@
         }
       }
 
-      const message = (name, link) =>
-        `بەڕێز ${name}، بە خۆشحاڵییەوە بانگهێشتتان دەکەین بۆ ${C.event.title}ی ${C.project.name}.\nبانگهێشتنامەکەتان لێرەدایە:\n${link}`;
+      const messages = {
+        ckb: (name, link) =>
+          `بەڕێز ${name}، بە خۆشحاڵییەوە بانگهێشتتان دەکەین بۆ مەراسیمی کردنەوەی فەرمیی بۆرسەی زەوییەکانی کۆیە.\nبانگهێشتنامەکەتان لێرەدایە:\n${link}`,
+        ar: (name, link) =>
+          `الأستاذ الفاضل ${name} المحترم، يسرّنا دعوتكم لحضور مراسم الافتتاح الرسمي لبورصة أراضي كويه.\nرابط دعوتكم الخاصة:\n${link}`,
+        en: (name, link) =>
+          `Dear ${name}, you are cordially invited to the Grand Opening Ceremony of Koya Land Exchange.\nYour invitation link:\n${link}`,
+      };
 
       function render() {
         let base;
         try { base = new URL(baseEl.value.trim()); } catch { base = null; }
+        const selLang = langEl ? langEl.value : "ckb";
         const names = [...new Set(namesEl.value.split("\n").map((n) => n.trim().replace(/\s+/g, " ")).filter(Boolean))];
         rows = base ? names.map((name) => {
           const u = new URL(base);
           u.searchParams.set("to", name);
-          return { name, link: u.href };
+          if (selLang !== "ckb") u.searchParams.set("lang", selLang);
+          else u.searchParams.delete("lang");
+          return { name, link: u.href, lang: selLang };
         }) : [];
 
         listEl.replaceChildren();
@@ -165,7 +191,7 @@
           copyBtn.textContent = "کۆپی";
           const wa = document.createElement("a");
           wa.className = "chip";
-          wa.href = `https://wa.me/?text=${encodeURIComponent(message(row.name, row.link))}`;
+          wa.href = `https://wa.me/?text=${encodeURIComponent(messages[row.lang || "ckb"](row.name, row.link))}`;
           wa.target = "_blank";
           wa.rel = "noopener";
           wa.textContent = "واتسئەپ";
@@ -187,6 +213,7 @@
         copy(rows.map((r) => `${r.name}\n${r.link}`).join("\n\n"), "هەموو بەستەرەکان کۆپی کران")
       );
       namesEl.addEventListener("input", render);
+      if (langEl) langEl.addEventListener("change", render);
       baseEl.addEventListener("input", render);
       render();
     })();

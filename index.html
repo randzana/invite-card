@@ -14,11 +14,18 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Noto+Kufi+Arabic:wght@300;400;500;600;700;800&family=Noto+Sans+Arabic:wght@300;400;500;600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Noto+Kufi+Arabic:wght@300;400;500;600;700;800&family=Noto+Sans+Arabic:wght@300;400;500;600&family=Outfit:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="is-locked">
   <noscript><style>.cover{display:none}.reveal{opacity:1;transform:none}</style><p class="noscript">تکایە JavaScript چالاک بکە بۆ بینینی بانگهێشتنامەکە.</p></noscript>
+
+  <!-- Language Switcher -->
+  <nav class="lang-bar" id="langBar" aria-label="Language selection">
+    <button class="lang-btn is-active" type="button" data-lang="ckb" aria-pressed="true">کوردی</button>
+    <button class="lang-btn" type="button" data-lang="ar" aria-pressed="false">عربي</button>
+    <button class="lang-btn" type="button" data-lang="en" aria-pressed="false">English</button>
+  </nav>
 
   <!-- Icon sprite -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -27,7 +34,6 @@
     <symbol id="i-bow" viewBox="0 0 24 24"><path d="M3 7.5 10 11v2l-7 3.5zM21 7.5 14 11v2l7 3.5z"/><rect x="10" y="10" width="4" height="4" rx="1.2"/></symbol>
     <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M12 13.2v4.4M9.8 15.4h4.4"/></symbol>
     <symbol id="i-share" viewBox="0 0 24 24"><circle cx="17.5" cy="5.5" r="2.5"/><circle cx="6.5" cy="12" r="2.5"/><circle cx="17.5" cy="18.5" r="2.5"/><path d="m8.7 10.8 6.6-3.9M8.7 13.2l6.6 3.9"/></symbol>
-    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.6 3.5h2.8l1.6 4.2-2.1 1.4a10.6 10.6 0 0 0 6 6l1.4-2.1 4.2 1.6v2.8a2 2 0 0 1-2.1 2A16 16 0 0 1 4.6 5.6a2 2 0 0 1 2-2.1z"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
     <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M19 12H5m5-5-5 5 5 5"/></symbol>
     <symbol id="i-google" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M9 14h2v3M14 14h1.5v3"/></symbol>
@@ -46,10 +52,10 @@
         <circle class="monogram__ring monogram__ring--dash" cx="60" cy="60" r="50"/>
         <path class="monogram__towers" d="M38 82V52l11-4v34M54 82V36l6-5 6 5v46M71 82V56l11-3v29M30 82h60"/>
       </svg>
-      <p class="cover__eyebrow">بانگهێشتنامەیەکی تایبەت</p>
-      <p class="cover__for">بۆ</p>
+      <p class="cover__eyebrow" data-text="ui.coverEyebrow">بانگهێشتنامەیەکی تایبەت</p>
+      <p class="cover__for" data-text="ui.coverFor">بۆ</p>
       <p class="cover__guest" data-text="view.coverGuest"></p>
-      <button class="btn btn--gold" id="openInvite" type="button">
+      <button class="btn btn--gold" id="openInvite" type="button" data-text="ui.coverBtn">
         کردنەوەی بانگهێشتنامە
       </button>
     </div>
@@ -115,7 +121,7 @@
     </section>
 
     <section class="panel when reveal" aria-labelledby="when-title">
-      <h2 class="section-title" id="when-title">وردەکاری مەراسیم</h2>
+      <h2 class="section-title" id="when-title" data-text="ui.detailsTitle">وردەکاری مەراسیم</h2>
 
       <div class="date-lockup">
         <span class="date-lockup__side" data-text="view.weekday"></span>
@@ -128,25 +134,25 @@
         <li class="detail">
           <span class="detail__icon"><svg class="icon"><use href="#i-clock"/></svg></span>
           <div class="detail__body">
-            <span class="detail__label">کات</span>
+            <span class="detail__label" data-text="ui.timeLabel">کات</span>
             <span class="detail__value" data-text="view.timeRange"></span>
           </div>
         </li>
         <li class="detail">
           <span class="detail__icon"><svg class="icon"><use href="#i-pin"/></svg></span>
           <div class="detail__body">
-            <span class="detail__label">شوێن</span>
+            <span class="detail__label" data-text="ui.venueLabel">شوێن</span>
             <span class="detail__value" data-text="venue.name"></span>
             <span class="detail__sub" data-text="venue.address"></span>
-            <a class="detail__link" data-href="venue.mapUrl" target="_blank" rel="noopener">
-              بینینی نەخشە <svg class="icon icon--sm"><use href="#i-arrow"/></svg>
+            <a class="detail__link" id="venueMapLink" target="_blank" rel="noopener">
+              <span data-text="ui.mapBtn">بینینی نەخشە</span> <svg class="icon icon--sm"><use href="#i-arrow"/></svg>
             </a>
           </div>
         </li>
         <li class="detail">
           <span class="detail__icon"><svg class="icon"><use href="#i-bow"/></svg></span>
           <div class="detail__body">
-            <span class="detail__label">جلوبەرگ</span>
+            <span class="detail__label" data-text="ui.dressLabel">جلوبەرگ</span>
             <span class="detail__value" data-text="event.dressCode"></span>
           </div>
         </li>
@@ -154,12 +160,12 @@
     </section>
 
     <section class="panel countdown reveal" aria-labelledby="countdown-title">
-      <h2 class="section-title" id="countdown-title">تا مەراسیم ماوە</h2>
+      <h2 class="section-title" id="countdown-title" data-text="ui.countdownTitle">تا مەراسیم ماوە</h2>
       <div class="countdown__grid" id="countdown">
-        <div class="countdown__unit"><span class="countdown__num" data-unit="days">٠٠</span><span class="countdown__label">ڕۆژ</span></div>
-        <div class="countdown__unit"><span class="countdown__num" data-unit="hours">٠٠</span><span class="countdown__label">کاتژمێر</span></div>
-        <div class="countdown__unit"><span class="countdown__num" data-unit="minutes">٠٠</span><span class="countdown__label">خولەک</span></div>
-        <div class="countdown__unit"><span class="countdown__num" data-unit="seconds">٠٠</span><span class="countdown__label">چرکە</span></div>
+        <div class="countdown__unit"><span class="countdown__num" data-unit="days">٠٠</span><span class="countdown__label" data-text="ui.days">ڕۆژ</span></div>
+        <div class="countdown__unit"><span class="countdown__num" data-unit="hours">٠٠</span><span class="countdown__label" data-text="ui.hours">کاتژمێر</span></div>
+        <div class="countdown__unit"><span class="countdown__num" data-unit="minutes">٠٠</span><span class="countdown__label" data-text="ui.minutes">خولەک</span></div>
+        <div class="countdown__unit"><span class="countdown__num" data-unit="seconds">٠٠</span><span class="countdown__label" data-text="ui.seconds">چرکە</span></div>
       </div>
       <p class="countdown__status" id="countdownStatus" hidden></p>
     </section>
@@ -174,36 +180,36 @@
 
     <nav class="actions reveal" aria-label="کردارەکان">
       <button class="action" id="btnCalendar" type="button">
-        <svg class="icon"><use href="#i-cal"/></svg><span>ساڵنامە</span>
+        <svg class="icon"><use href="#i-cal"/></svg><span data-text="ui.calBtn">ساڵنامە</span>
       </button>
-      <a class="action" data-href="venue.mapUrl" target="_blank" rel="noopener">
-        <svg class="icon"><use href="#i-pin"/></svg><span>نەخشە</span>
+      <a class="action" id="actionMapLink" target="_blank" rel="noopener">
+        <svg class="icon"><use href="#i-pin"/></svg><span data-text="ui.mapNavBtn">نەخشە</span>
       </a>
       <button class="action" id="btnShare" type="button">
-        <svg class="icon"><use href="#i-share"/></svg><span>هاوبەشکردن</span>
+        <svg class="icon"><use href="#i-share"/></svg><span data-text="ui.shareBtn">هاوبەشکردن</span>
       </button>
     </nav>
 
     <footer class="footer reveal">
       <span class="ornament" aria-hidden="true"></span>
-      <p class="footer__hope">بە هیوای بینینتان</p>
+      <p class="footer__hope" data-text="ui.footerHope">بە هیوای بینینتان</p>
       <p class="footer__host" data-text="project.host"></p>
-      <p class="footer__credit">دروستکراوە لەلایەن ڕاند زانا</p>
+      <p class="footer__credit" data-text="ui.footerCredit">دروستکراوە لەلایەن ڕاند زانا</p>
     </footer>
   </main>
 
   <dialog class="sheet" id="calDialog" aria-labelledby="cal-title">
     <form method="dialog">
-      <h2 class="section-title" id="cal-title">زیادکردن بۆ ساڵنامە</h2>
+      <h2 class="section-title" id="cal-title" data-text="ui.calTitle">زیادکردن بۆ ساڵنامە</h2>
       <div class="sheet__options">
         <a class="sheet__option" id="calGoogle" target="_blank" rel="noopener">
-          <svg class="icon"><use href="#i-google"/></svg>ساڵنامەی گووگڵ
+          <svg class="icon"><use href="#i-google"/></svg><span data-text="ui.calGoogle">ساڵنامەی گووگڵ</span>
         </a>
         <button class="sheet__option" id="calIcs" type="button">
-          <svg class="icon"><use href="#i-download"/></svg>ئەپڵ، ئاوتلووک و هی تر
+          <svg class="icon"><use href="#i-download"/></svg><span data-text="ui.calIcs">ئەپڵ، ئاوتلووک و هی تر</span>
         </button>
       </div>
-      <button class="btn btn--ghost btn--block" value="close">داخستن</button>
+      <button class="btn btn--ghost btn--block" value="close" data-text="ui.calClose">داخستن</button>
     </form>
   </dialog>
 
