@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="ckb" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#090D0B">
+  <title>بەستەری میوانەکان</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .page {
+      width: min(100% - 32px, 560px);
+      margin-inline: auto;
+      padding-block: 40px 64px;
+      display: grid;
+      gap: 18px;
+    }
+    .page__head { text-align: center; }
+    .page__title {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 7vw, 2.1rem);
+      font-weight: 800;
+      line-height: 1.6;
+    }
+    .page__lead { margin-top: 6px; font-size: 0.92rem; color: var(--text-soft); }
+    .page .panel { display: grid; gap: 16px; }
+    .page .section-title { margin-bottom: 0; }
+    textarea.field__input { min-height: 160px; resize: vertical; line-height: 1.9; }
+    .links { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+    .links__empty { text-align: center; color: var(--muted); font-size: 0.9rem; padding-block: 12px; }
+    .link-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      align-items: center;
+      gap: 6px 8px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(0, 0, 0, 0.25);
+    }
+    .link-row__name { font-family: var(--font-display); font-weight: 600; overflow-wrap: anywhere; }
+    .link-row__url {
+      grid-column: 1 / -1;
+      direction: ltr;
+      text-align: left;
+      font-size: 0.75rem;
+      color: var(--muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .chip {
+      min-height: 36px;
+      padding: 4px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line-strong);
+      background: transparent;
+      color: var(--gold-light);
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+    @media (hover: hover) { .chip:hover { background: rgba(212, 180, 124, 0.1); } }
+  </style>
+</head>
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <main class="page">
+    <header class="page__head">
+      <h1 class="page__title"><span class="gold-text">بەستەری تایبەت بۆ میوانەکان</span></h1>
+      <p class="page__lead">ناوی هەر میوانێک لە دێڕێکی جیادا بنووسە؛ هەر یەکێکیان بەستەرێک وەردەگرێت کە ناوی خۆی لەسەر بانگهێشتنامەکە دەردەکەوێت.</p>
+    </header>
+
+    <section class="panel">
+      <div class="field">
+        <label class="field__label" for="names">ناوی میوانەکان (هەر ناوێک لە دێڕێکدا)</label>
+        <textarea class="field__input" id="names" placeholder="بیلال سەعید&#10;شیلان ئەحمەد&#10;د. هێمن عومەر"></textarea>
+      </div>
+      <div class="field">
+        <label class="field__label" for="base">بەستەری بانگهێشتنامە</label>
+        <input class="field__input field__input--ltr" id="base" type="url" dir="ltr" spellcheck="false">
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="links-title">
+      <h2 class="section-title" id="links-title">بەستەرەکان</h2>
+      <ul class="links" id="links"></ul>
+      <button class="btn btn--gold btn--block" id="copyAll" type="button" hidden>کۆپیکردنی هەموو بەستەرەکان</button>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="assets/js/config.js"></script>
+  <script>
+    (() => {
+      "use strict";
+      const C = window.INVITE_CONFIG;
+      const $ = (s) => document.querySelector(s);
+      const namesEl = $("#names");
+      const baseEl = $("#base");
+      const listEl = $("#links");
+      const copyAllBtn = $("#copyAll");
+      const KEY = "invite-links:names";
+      let rows = [];
+
+      baseEl.value = new URL("index.html", location.href).href;
+      try { namesEl.value = localStorage.getItem(KEY) || ""; } catch { /* storage unavailable */ }
+
+      let toastTimer;
+      function toast(msg) {
+        const el = $("#toast");
+        el.textContent = msg;
+        el.classList.add("is-visible");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => el.classList.remove("is-visible"), 2200);
+      }
+
+      async function copy(text, msg) {
+        try {
+          await navigator.clipboard.writeText(text);
+          toast(msg);
+        } catch {
+          toast("نەتوانرا کۆپی بکرێت");
+        }
+      }
+
+      const message = (name, link) =>
+        `بەڕێز ${name}، بە خۆشحاڵییەوە بانگهێشتتان دەکەین بۆ ${C.event.title}ی ${C.project.name}.\nبانگهێشتنامەکەتان لێرەدایە:\n${link}`;
+
+      function render() {
+        let base;
+        try { base = new URL(baseEl.value.trim()); } catch { base = null; }
+        const names = [...new Set(namesEl.value.split("\n").map((n) => n.trim().replace(/\s+/g, " ")).filter(Boolean))];
+        rows = base ? names.map((name) => {
+          const u = new URL(base);
+          u.searchParams.set("to", name);
+          return { name, link: u.href };
+        }) : [];
+
+        listEl.replaceChildren();
+        if (!rows.length) {
+          const li = document.createElement("li");
+          li.className = "links__empty";
+          li.textContent = base ? "هێشتا هیچ ناوێک نەنووسراوە." : "بەستەری بانگهێشتنامە دروست نییە.";
+          listEl.append(li);
+        }
+        rows.forEach((row, i) => {
+          const li = document.createElement("li");
+          li.className = "link-row";
+          const name = document.createElement("span");
+          name.className = "link-row__name";
+          name.textContent = row.name;
+          const copyBtn = document.createElement("button");
+          copyBtn.className = "chip";
+          copyBtn.type = "button";
+          copyBtn.dataset.copy = i;
+          copyBtn.textContent = "کۆپی";
+          const wa = document.createElement("a");
+          wa.className = "chip";
+          wa.href = `https://wa.me/?text=${encodeURIComponent(message(row.name, row.link))}`;
+          wa.target = "_blank";
+          wa.rel = "noopener";
+          wa.textContent = "واتسئەپ";
+          const url = document.createElement("span");
+          url.className = "link-row__url";
+          url.textContent = decodeURI(row.link);
+          li.append(name, copyBtn, wa, url);
+          listEl.append(li);
+        });
+        copyAllBtn.hidden = rows.length < 2;
+        try { localStorage.setItem(KEY, namesEl.value); } catch { /* storage unavailable */ }
+      }
+
+      listEl.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-copy]");
+        if (btn) copy(rows[+btn.dataset.copy].link, "بەستەرەکە کۆپی کرا");
+      });
+      copyAllBtn.addEventListener("click", () =>
+        copy(rows.map((r) => `${r.name}\n${r.link}`).join("\n\n"), "هەموو بەستەرەکان کۆپی کران")
+      );
+      namesEl.addEventListener("input", render);
+      baseEl.addEventListener("input", render);
+      render();
+    })();
+  </script>
+</body>
+</html>
